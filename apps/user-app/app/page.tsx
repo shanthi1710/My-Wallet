@@ -1,7 +1,9 @@
-import React from 'react'
+import { Button } from "../@/components/ui/button"
 
-export default function page() {
+export default function Home() {
   return (
-    <div>page</div>
+    <div>
+      <Button >Click me</Button>
+    </div>
   )
 }
