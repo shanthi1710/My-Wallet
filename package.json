@@ -1,23 +1,35 @@
 {
-  "name": "mywallet",
+  "name": "week-18",
   "private": true,
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"/*.{ts,tsx,md}\"",
+    "db:generate": "cd packages/db && npx prisma generate && cd ../..",
+    "start-user-app": "cd ./apps/user-app && npm run start"
   },
   "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
     "prettier": "^3.2.5",
-    "turbo": "^2.0.9",
-    "typescript": "^5.4.5"
+    "turbo": "latest"
   },
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "npm@10.8.2",
+  "packageManager": "npm@10.2.4",
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "axios": "^1.7.2",
+    "bcryptjs": "^2.4.3",
+    "html-loader": "^5.0.0",
+    "lucide-react": "^0.408.0",
+    "mock-aws-s3": "^4.0.2",
+    "react-icons": "^5.2.1"
+  }
 }
