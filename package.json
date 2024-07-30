@@ -24,6 +24,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@types/axios": "^0.9.36",
     "@types/bcryptjs": "^2.4.6",
     "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
