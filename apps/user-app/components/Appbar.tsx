@@ -1,5 +1,4 @@
 // Appbar.tsx
-import { Button } from "@repo/ui/button";
 
 interface AppbarProps {
   user?: {
