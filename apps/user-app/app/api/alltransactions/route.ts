@@ -22,7 +22,7 @@ export async function GET() {
   const allTransactions = [
     ...user.OnRampTransaction.map((item) => ({
       ...item,
-      type: "Added",
+      type: `Added to your wallet <-------> ${item.startTime.toLocaleString()} <-------> ${item.status} -----------------> `, // add status also
       timestamp: item.startTime.toISOString(),
     })),
     ...user.sentTransfers.map((item) => ({
