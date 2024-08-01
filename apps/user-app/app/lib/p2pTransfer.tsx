@@ -50,33 +50,37 @@ export async function p2pTransfer(to: string, amount: number) {
         throw new Error("Insufficient funds");
       }
 
+      // Decrement the balance and set the locked amount in a single query
       await tx.balance.update({
         where: { userId: Number(fromUser.id) },
         data: {
           amount: { decrement: amount },
-          locked: amount / 10,
+          locked: { increment: amount / 10 },
         },
       });
 
+      // Upsert the balance for the toUser
       await tx.balance.upsert({
         where: { userId: Number(toUser.id) },
         update: {
-          amount: { decrement: amount },
-          locked: amount / 10,
+          amount: { increment: amount },
+          locked: { increment: amount / 10 },
         },
         create: {
-          userId: toUser.id,
+          userId: Number(toUser.id),
           amount: amount,
           locked: amount / 10,
         },
       });
 
+      // Create the transfer record
       await tx.p2pTransfer.create({
         data: {
           fromUserId: Number(fromUser.id),
-          toUserId: toUser.id,
+          toUserId: Number(toUser.id),
           amount,
           timestamp: new Date(),
+          status: "Success",
         },
       });
     });
@@ -86,6 +90,18 @@ export async function p2pTransfer(to: string, amount: number) {
     };
   } catch (error) {
     console.error(error);
+
+    // Create a failure transfer record outside of the main transaction to ensure it is recorded even if the main transaction fails
+    await prisma.p2pTransfer.create({
+      data: {
+        fromUserId: Number(fromUser.id),
+        toUserId: Number(toUser.id),
+        amount,
+        timestamp: new Date(),
+        status: "Failure",
+      },
+    });
+
     return {
       message: "Error while processing transfer",
     };

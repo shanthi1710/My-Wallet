@@ -38,7 +38,7 @@ export async function GET() {
         });
         return {
           ...item,
-          type: `Sent to ${toUser?.name} <-------> ${item.timestamp.toLocaleString()}`,
+          type: `Sent to ${toUser?.name} <-------> ${item.timestamp.toLocaleString()} <-------> ${item.status} -----------------> `,
           timestamp: item.timestamp.toISOString(),
         };
       })
@@ -53,7 +53,7 @@ export async function GET() {
         });
         return {
           ...item,
-          type: `received form ${fromUser?.name}`,
+          type: `received form ${fromUser?.name} <-------> ${item.timestamp.toLocaleString()} <-------> ${item.status} ----------------->`,
           timestamp: item.timestamp.toISOString(),
         };
       })
