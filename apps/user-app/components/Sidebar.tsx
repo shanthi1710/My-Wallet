@@ -8,7 +8,7 @@ import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { MdQrCodeScanner } from "react-icons/md";
 import { Button } from "@repo/ui/button";
-
+import { IoIosLogOut } from "react-icons/io";
 interface AppbarProps {
   user?: {
     name?: string | null;
@@ -64,10 +64,20 @@ export const Sidebar: React.FC<AppbarProps> = ({
       <div className="mt-auto p-4">
         <div className="flex justify-center items-center bg-purple-700 rounded-lg p-2.5">
           <Button
-            className="font-semibold text-white"
+            className="font-semibold text-white flex items-center"
             onClick={user ? onSignout : onSignin}
           >
-            {user ? "Logout" : " "}
+            {user ? (
+              <>
+                <IoIosLogOut
+                  className="mr-2 font-semibold"
+                  style={{ fontSize: "1.5rem" }}
+                />
+                Logout
+              </>
+            ) : (
+              " "
+            )}
           </Button>
         </div>
       </div>
