@@ -16,26 +16,51 @@ export async function GET() {
       receivedTransfers: true,
     },
   });
+
   if (!user) {
     return { Message: "User Not Exist" };
   }
+
   const allTransactions = [
+    //----------------------------------------------------------------------------------------------------------------------------
     ...user.OnRampTransaction.map((item) => ({
       ...item,
-      type: `Added to your wallet <-------> ${item.startTime.toLocaleString()} <-------> ${item.status} -----------------> `, // add status also
+      type: `Added to your wallet <-------> ${item.startTime.toLocaleString()} <-------> ${item.status} -----------------> `,
       timestamp: item.startTime.toISOString(),
     })),
-    ...user.sentTransfers.map((item) => ({
-      ...item,
-      type: "sent",
-      timestamp: item.timestamp.toISOString(),
-    })),
-    ...user.receivedTransfers.map((item) => ({
-      ...item,
-      type: "received",
-      timestamp: item.timestamp.toISOString(),
-    })),
+    //----------------------------------------------------------------------------------------------------------------------------
+    ...(await Promise.all(
+      user.sentTransfers.map(async (item) => {
+        const toUser = await db.user.findUnique({
+          where: {
+            id: item.toUserId,
+          },
+        });
+        return {
+          ...item,
+          type: `Sent to ${toUser?.name} <-------> ${item.timestamp.toLocaleString()}`,
+          timestamp: item.timestamp.toISOString(),
+        };
+      })
+    )),
+    //----------------------------------------------------------------------------------------------------------------------------
+    ...(await Promise.all(
+      user.receivedTransfers.map(async (item) => {
+        const fromUser = await db.user.findUnique({
+          where: {
+            id: item.fromUserId,
+          },
+        });
+        return {
+          ...item,
+          type: `received form ${fromUser?.name}`,
+          timestamp: item.timestamp.toISOString(),
+        };
+      })
+    )),
+    //----------------------------------------------------------------------------------------------------------------------------
   ];
+
   allTransactions.sort(
     (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
   );

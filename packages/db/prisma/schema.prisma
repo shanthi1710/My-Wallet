@@ -33,7 +33,8 @@ model Merchant {
 }
 
 model p2pTransfer {
-  id         Int      @id @default(autoincrement())
+  id Int @id @default(autoincrement())
+
   amount     Int
   timestamp  DateTime
   fromUserId Int
