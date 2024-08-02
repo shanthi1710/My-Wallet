@@ -1,5 +1,12 @@
-import React from "react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../lib/auth";
+import DashboardPage from "../../../components/dashboard";
 
-export default function page() {
-  return <div>hey dash</div>;
+export default async function Page() {
+  const session = await getServerSession(authOptions);
+  return (
+    <div className=" h-screen overflow-hidden">
+      <DashboardPage />
+    </div>
+  );
 }
