@@ -19,6 +19,18 @@ import {
 export function SendCard() {
   const [number, setNumber] = useState("");
   const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleTransfer = async () => {
+    setLoading(true); // Disable the button
+    try {
+      await p2pTransfer(number, Number(amount));
+    } catch (error) {
+      console.error("Transfer failed", error);
+    } finally {
+      setLoading(false); // Enable the button again
+    }
+  };
 
   return (
     <div className="h-[90vh]">
@@ -38,16 +50,16 @@ export function SendCard() {
                       setNumber(e.target.value);
                     }}
                     id="name"
-                    placeholder="Mobile No.Of Reciever"
+                    placeholder="Mobile No. of Receiver"
                   />
                 </div>
                 <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="framework">Amount</Label>
+                  <Label htmlFor="amount">Amount</Label>
                   <Input
                     onChange={(e) => {
                       setAmount(e.target.value);
                     }}
-                    id="name"
+                    id="amount"
                     placeholder="Amount to be Sent"
                   />
                 </div>
@@ -55,12 +67,8 @@ export function SendCard() {
             </form>
           </CardContent>
           <CardFooter className="flex justify-center">
-            <Button
-              onClick={() => {
-                p2pTransfer(number, Number(amount));
-              }}
-            >
-              Send
+            <Button onClick={handleTransfer} disabled={loading}>
+              {loading ? "Processing..." : "Send"}
             </Button>
           </CardFooter>
         </Card>

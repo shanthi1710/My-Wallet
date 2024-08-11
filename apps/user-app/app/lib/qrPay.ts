@@ -1,10 +1,9 @@
 "use server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "./auth";
-
+import { authOptions } from "../lib/auth";
 import prisma from "@repo/db/client";
 
-export async function p2pTransfer(to: string, amount: number) {
+export async function qrPay(to: string, amount: number) {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) {
@@ -27,7 +26,7 @@ export async function p2pTransfer(to: string, amount: number) {
 
   const toUser = await prisma.user.findFirst({
     where: {
-      number: to,
+      email: to,
     },
   });
 
@@ -39,9 +38,10 @@ export async function p2pTransfer(to: string, amount: number) {
 
   try {
     await prisma.$transaction(async (tx) => {
+      // Lock the balance row for the fromUser
       await tx.$queryRaw`SELECT * FROM "Balance" WHERE "userId" = ${fromUser.id} FOR UPDATE`;
 
-      const fromBalance = await tx.balance.findFirst({
+      const fromBalance = await tx.balance.findUnique({
         where: { userId: Number(fromUser.id) },
       });
 
@@ -49,6 +49,7 @@ export async function p2pTransfer(to: string, amount: number) {
         throw new Error("Insufficient funds");
       }
 
+      // Decrement the balance and set the locked amount in a single query
       await tx.balance.update({
         where: { userId: Number(fromUser.id) },
         data: {
@@ -57,6 +58,7 @@ export async function p2pTransfer(to: string, amount: number) {
         },
       });
 
+      // Upsert the balance for the toUser
       await tx.balance.upsert({
         where: { userId: Number(toUser.id) },
         update: {
@@ -70,7 +72,8 @@ export async function p2pTransfer(to: string, amount: number) {
         },
       });
 
-      await tx.p2pTransfer.create({
+      // Create the transfer record
+      await tx.qrTransfer.create({
         data: {
           fromUserId: Number(fromUser.id),
           toUserId: Number(toUser.id),
@@ -86,7 +89,9 @@ export async function p2pTransfer(to: string, amount: number) {
     };
   } catch (error) {
     console.error(error);
-    await prisma.p2pTransfer.create({
+
+    // Create a failure transfer record outside of the main transaction to ensure it is recorded even if the main transaction fails
+    await prisma.qrTransfer.create({
       data: {
         fromUserId: Number(fromUser.id),
         toUserId: Number(toUser.id),
