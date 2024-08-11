@@ -20,20 +20,36 @@ export function SendCard() {
   const [number, setNumber] = useState("");
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(""); // To hold success or error message
 
   const handleTransfer = async () => {
     setLoading(true); // Disable the button
     try {
-      await p2pTransfer(number, Number(amount));
+      const response = await p2pTransfer(number, Number(amount));
+      if (response?.message === "Transfer successful") {
+        setMessage("Successfully transferred"); // Show success pop-up
+      } else {
+        setMessage(response?.message || "Transfer failed"); // Show error pop-up
+      }
     } catch (error) {
-      console.error("Transfer failed", error);
+      if (error instanceof Error) {
+        setMessage("Transfer failed: " + error.message); // Show error pop-up
+      } else {
+        setMessage("Transfer failed: An unknown error occurred");
+      }
     } finally {
-      setLoading(false); // Enable the button again
+      setLoading(false);
     }
   };
 
+  const handleClose = () => {
+    setMessage(""); // Close the pop-up
+    setNumber("");
+    setAmount("");
+  };
+
   return (
-    <div className="h-[90vh]">
+    <div className="h-[90vh] relative">
       <Center>
         <Card className="w-[350px]">
           <CardHeader>
@@ -46,6 +62,7 @@ export function SendCard() {
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="name">Mobile No.</Label>
                   <Input
+                    value={number}
                     onChange={(e) => {
                       setNumber(e.target.value);
                     }}
@@ -56,6 +73,7 @@ export function SendCard() {
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="amount">Amount</Label>
                   <Input
+                    value={amount}
                     onChange={(e) => {
                       setAmount(e.target.value);
                     }}
@@ -73,6 +91,15 @@ export function SendCard() {
           </CardFooter>
         </Card>
       </Center>
+
+      {message && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+            <div className="mb-4 text-lg font-semibold">{message}</div>
+            <Button onClick={handleClose}>Close</Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
