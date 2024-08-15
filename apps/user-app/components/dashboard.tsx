@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "../@/components/ui/card";
 import { Overview } from "../@/components/ui/overview";
-import { RecentSales } from "../@/components/ui/recent-sales";
+import { RecentSales1 } from "../@/components/ui/last-ten-sales";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -112,7 +112,7 @@ export default function DashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="h-full overflow-auto">
-              <RecentSales />
+              <RecentSales1 />
             </CardContent>
           </Card>
         </div>
