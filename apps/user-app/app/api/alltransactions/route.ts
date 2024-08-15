@@ -25,7 +25,7 @@ export async function GET() {
     //----------------------------------------------------------------------------------------------------------------------------
     ...user.OnRampTransaction.map((item) => ({
       ...item,
-      type: `Added to your wallet <-------> ${item.startTime.toLocaleString()} <-------> ${item.status} -----------------> `,
+      type: `Added to your wallet -------> ${item.startTime.toLocaleString()} -------> ${item.status} -----------------> `,
       timestamp: item.startTime.toISOString(),
     })),
     //----------------------------------------------------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ export async function GET() {
         });
         return {
           ...item,
-          type: `Sent to ${toUser?.name} <-------> ${item.timestamp.toLocaleString()} <-------> ${item.status} -----------------> `,
+          type: `Sent to ${toUser?.name} -------> ${item.timestamp.toLocaleString()} -------> ${item.status} -----------------> `,
           timestamp: item.timestamp.toISOString(),
         };
       })
@@ -53,7 +53,7 @@ export async function GET() {
         });
         return {
           ...item,
-          type: `received form ${fromUser?.name} <-------> ${item.timestamp.toLocaleString()} <-------> ${item.status} ----------------->`,
+          type: `received form ${fromUser?.name} -------> ${item.timestamp.toLocaleString()} -------> ${item.status} ----------------->`,
           timestamp: item.timestamp.toISOString(),
         };
       })
@@ -62,7 +62,7 @@ export async function GET() {
   ];
 
   allTransactions.sort(
-    (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
   );
 
   return NextResponse.json({
