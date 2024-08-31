@@ -38,7 +38,7 @@ export const Sidebar: React.FC<AppbarProps> = ({
     if (currentMenu) {
       setSelectedMenu(currentMenu.name);
     } else {
-      setSelectedMenu("Dashboard"); // default to "Dashboard" if no match is found
+      setSelectedMenu("Dashboard");
     }
   }, [pathname]);
 

@@ -2,7 +2,7 @@ import db from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import authOptions from "../../lib/auth";
 import { NextResponse } from "next/server";
-import sentTransfer from "../../lib/actions/rTransfer";
+//import sentTransfer from "../../lib/actions/rTransfer";
 
 export async function GET() {
   const session = await getServerSession(authOptions);

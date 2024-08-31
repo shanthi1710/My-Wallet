@@ -1,6 +1,5 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
-import {} from "./Appbar";
 import { useEffect, useState } from "react";
 import { Sidebar } from "./Sidebar";
 
