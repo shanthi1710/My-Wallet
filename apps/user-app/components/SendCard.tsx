@@ -20,20 +20,20 @@ export function SendCard() {
   const [number, setNumber] = useState("");
   const [amount, setAmount] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(""); // To hold success or error message
+  const [message, setMessage] = useState("");
 
   const handleTransfer = async () => {
-    setLoading(true); // Disable the button
+    setLoading(true);
     try {
       const response = await p2pTransfer(number, Number(amount));
       if (response?.message === "Transfer successful") {
-        setMessage("Successfully transferred"); // Show success pop-up
+        setMessage("Successfully transferred");
       } else {
-        setMessage(response?.message || "Transfer failed"); // Show error pop-up
+        setMessage(response?.message || "Transfer failed");
       }
     } catch (error) {
       if (error instanceof Error) {
-        setMessage("Transfer failed: " + error.message); // Show error pop-up
+        setMessage("Transfer failed: " + error.message);
       } else {
         setMessage("Transfer failed: An unknown error occurred");
       }
