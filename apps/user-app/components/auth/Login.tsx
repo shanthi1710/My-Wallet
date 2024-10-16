@@ -13,6 +13,9 @@ import { ChangeEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 
 export default function Login() {
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otp, setOtp] = useState("");
+  const [isOtpSent, setIsOtpSent] = useState(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -27,6 +30,15 @@ export default function Login() {
     setPassword(e.target.value);
   };
 
+  const handlePhoneNumberChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(e.target.value);
+  };
+
+  const handleOtpChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setOtp(e.target.value);
+  };
+
+  // Handle submit to sign in and send OTP
   const handleSubmit = async () => {
     setError("");
     setLoading(true);
@@ -42,10 +54,57 @@ export default function Login() {
       setLoading(false);
       setError("Invalid email or password");
     } else {
-      console.log("good bro");
+      try {
+        // Send OTP to the provided phone number
+        const response = await fetch("/api/sendOtp", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ phoneNumber }),
+        });
+
+        if (response.ok) {
+          console.log("OTP sent successfully");
+          setIsOtpSent(true); // Set OTP sent state
+        } else {
+          const errorData = await response.json();
+          setError(errorData.message || "Failed to send OTP");
+        }
+      } catch (error) {
+        console.error("Error sending OTP:", error);
+        setError("Failed to send OTP");
+      }
+
       setLoading(false);
-      router.push("/");
     }
+  };
+
+  // Handle OTP verification
+  const handleVerifyOtp = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/verifyOtp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ phoneNumber, otp }),
+      });
+
+      if (response.ok) {
+        console.log("OTP verified successfully");
+        // Handle successful OTP verification, e.g., redirect to the homepage
+        router.push("/");
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Failed to verify OTP");
+      }
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      setError("Failed to verify OTP");
+    }
+    setLoading(false);
   };
 
   return (
@@ -58,7 +117,7 @@ export default function Login() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleSubmit();
+            isOtpSent ? handleVerifyOtp() : handleSubmit();
           }}
         >
           <div className="space-y-1">
@@ -81,12 +140,34 @@ export default function Login() {
               onChange={handlePasswordChange}
             />
           </div>
+          <div className="space-y-1">
+            <Label htmlFor="phone">Phone Number</Label>
+            <Input
+              id="phone"
+              type="text"
+              placeholder="Enter your phone number"
+              name="phone"
+              onChange={handlePhoneNumberChange}
+            />
+          </div>
+          {isOtpSent && (
+            <div className="space-y-1">
+              <Label htmlFor="otp">OTP</Label>
+              <Input
+                id="otp"
+                type="text"
+                placeholder="Enter OTP"
+                name="otp"
+                onChange={handleOtpChange}
+              />
+            </div>
+          )}
           {error && <p className="text-red-500">{error}</p>}
           <span className="text-blue-500 font-semibold mt-1 mb-1">
             Forgot password
           </span>
           <Button type="submit" className="w-full mt-3" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Processing..." : isOtpSent ? "Verify OTP" : "Sign In"}
           </Button>
         </form>
       </CardContent>
