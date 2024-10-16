@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import { MdQrCodeScanner } from "react-icons/md";
 import { Button } from "@repo/ui/button";
 import { IoIosLogOut } from "react-icons/io";
+import { BiMoneyWithdraw } from "react-icons/bi";
 interface AppbarProps {
   user?: {
     name?: string | null;
@@ -27,8 +28,14 @@ export const Sidebar: React.FC<AppbarProps> = ({
 
   const menus = [
     { name: "Dashboard", link: "/dash", icon: RiDashboardHorizontalLine },
-    { name: "Add Balance", link: "/transfer", icon: FaMoneyBillTransfer },
-    { name: "Transactions", link: "/transactions", icon: AiOutlineTransaction },
+    { name: "Add Money", link: "/transfer", icon: FaMoneyBillTransfer },
+    { name: "withdraw money", link: "/withdraw", icon: BiMoneyWithdraw },
+    {
+      name: "Transactions History",
+      link: "/transactions",
+      icon: AiOutlineTransaction,
+    },
+
     { name: "P2P", link: "/p2p", icon: RiP2pFill },
     { name: "Qr-Scan", link: "/qr-scan", icon: MdQrCodeScanner },
   ];

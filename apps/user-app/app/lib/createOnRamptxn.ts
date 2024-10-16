@@ -44,7 +44,7 @@ export async function createOnRampTransaction(
     },
   });
   const shanthi = process.env.HDFC_SECRET;
-  console.log("shanthi:------------->", shanthi);
+  //console.log("shanthi:------------->", shanthi);
   console.log();
   try {
     const res = await axios.post<hdfcresponse>(

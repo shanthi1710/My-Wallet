@@ -33,8 +33,10 @@ export const AddMoney = () => {
   );
   const [amount, setAmount] = useState("0");
   const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
+
   const handleSelectChange = (value: string) => {
     const selectedBank = SUPPORTED_BANKS.find((bank) => bank.name === value);
+
     if (selectedBank) {
       setRedirectUrl(selectedBank.redirectUrl);
       setProvider(selectedBank.name);
@@ -44,7 +46,7 @@ export const AddMoney = () => {
   const handleAddMoney = async () => {
     try {
       const result = await createOnRampTransaction(Number(amount), provider);
-      console.log("result:->", result);
+      //console.log("result:->", result);
       window.location.href = redirectUrl || "";
       if (result.success) {
         alert("Transaction Succeeded");
