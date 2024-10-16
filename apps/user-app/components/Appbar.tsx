@@ -1,5 +1,5 @@
 // Appbar.tsx
-
+import { IoIosNotifications } from "react-icons/io";
 interface AppbarProps {
   user?: {
     name?: string | null;
@@ -14,6 +14,9 @@ export const Appbar: React.FC<AppbarProps> = ({ user }) => {
       <div className="text-xl flex flex-col font-semibold text-black justify-center">
         MyWallet
       </div>
+      {/* <div className="pt-2 ">
+        <IoIosNotifications className="size-7" />
+      </div> */}
       <div className="flex flex-col justify-center pt-2">
         {user ? (
           <div className="flex items-center">

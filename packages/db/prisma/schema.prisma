@@ -18,6 +18,7 @@ model User {
   email             String              @unique
   name              String?
   number            String              @unique
+  isVerified        Boolean             @default(false)
   password          String
   Balance           Balance[]
   OnRampTransaction OnRampTransaction[]

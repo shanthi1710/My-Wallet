@@ -12,7 +12,7 @@ const paymentSchema = z.object({
 });
 
 const SECRET = process.env.SECRET;
-console.log("secret:----->", SECRET);
+//console.log("secret:----->", SECRET);
 app.post("/hdfcWebhook", async (req: Request, res: Response) => {
   const receivedSecret = req.headers["hdfcsecret"];
   if (receivedSecret !== SECRET) {
@@ -66,6 +66,7 @@ app.post("/hdfcWebhook", async (req: Request, res: Response) => {
   }
 });
 
+app.post("/hdfcWihdraw", async () => {});
 const PORT = process.env.PORT || 3003;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
