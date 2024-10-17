@@ -145,7 +145,7 @@ export default function Login() {
             <Input
               id="phone"
               type="text"
-              placeholder="Enter your phone number"
+              placeholder="+910123456789"
               name="phone"
               onChange={handlePhoneNumberChange}
             />
@@ -156,7 +156,7 @@ export default function Login() {
               <Input
                 id="otp"
                 type="text"
-                placeholder="Enter OTP"
+                placeholder="Send OTP to your phone number"
                 name="otp"
                 onChange={handleOtpChange}
               />

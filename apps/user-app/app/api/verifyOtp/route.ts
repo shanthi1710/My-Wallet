@@ -49,7 +49,7 @@ export async function POST(request: Request) {
       );
     }
   } catch (error) {
-    console.error("OTP verification failed:", error);
+    //console.error("OTP verification failed:", error);
     return NextResponse.json(
       { message: "Verification failed due to an error" },
       { status: 500 }

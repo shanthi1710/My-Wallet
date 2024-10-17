@@ -2,7 +2,7 @@
 
 import db from "@repo/db/client";
 import bcrypt from "bcrypt";
-
+import { sendEmail } from "../utils/email.service";
 async function signup(
   email: string,
   name: string,
@@ -25,6 +25,7 @@ async function signup(
           password: hashedPassword,
         },
       });
+      await sendEmail(email, name);
       console.log("user created successfully", newUser);
       return true;
     } else {
