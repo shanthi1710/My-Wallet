@@ -29,7 +29,7 @@ export async function POST(request: Request) {
 
   try {
     const twilioResponse = await sendOtp(formattedPhoneNumber);
-    console.log("send otp twilioResponse :->>", twilioResponse);
+    //console.log("send otp twilioResponse :->>", twilioResponse);
     if (twilioResponse.status === "pending") {
       return NextResponse.json({ message: "OTP sent" }, { status: 200 });
     }

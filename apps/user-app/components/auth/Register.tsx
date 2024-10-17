@@ -121,7 +121,7 @@ export default function Register({ setAuthTab }: Props) {
               id="phone"
               type="text"
               name="phone"
-              placeholder="Enter your phone number"
+              placeholder="0123456789"
               onChange={(e) => setNumber(e.target.value)}
               onBlur={() => handleBlur("number")}
             />
