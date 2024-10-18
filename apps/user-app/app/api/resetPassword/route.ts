@@ -2,9 +2,10 @@ import db from "@repo/db/client";
 import { NextResponse } from "next/server";
 import { verifyOtp } from "../../lib/utils/otpUtils";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
+import { hash } from "bcryptjs";
 
 export async function POST(request: Request) {
-  const { phoneNumber, otp } = await request.json();
+  const { phoneNumber, otp, newPassword } = await request.json();
 
   const parsedPhoneNumber = parsePhoneNumberFromString(phoneNumber, "IN");
 
@@ -32,13 +33,16 @@ export async function POST(request: Request) {
     console.log("verify otp twilioResponse:->", twilioResponse);
 
     if (twilioResponse.status === "approved") {
+      const hashedPassword = await hash(newPassword, 10);
       await db.user.update({
         where: { number: plainPhoneNumber },
-        data: { isVerified: true },
+        data: {
+          password: hashedPassword,
+        },
       });
 
       return NextResponse.json(
-        { message: "OTP verified successfully" },
+        { message: "OTP verified and password updated successfully" },
         { status: 200 }
       );
     } else {
@@ -48,7 +52,7 @@ export async function POST(request: Request) {
       );
     }
   } catch (error) {
-    //console.error("OTP verification failed:", error);
+    console.error("OTP verification failed:", error);
     return NextResponse.json(
       { message: "Verification failed due to an error" },
       { status: 500 }
