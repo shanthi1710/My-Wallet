@@ -10,6 +10,7 @@ type Credentials = {
 
 interface AuthUser extends User {
   id: string;
+  profileImg: string; // Add profileImg here
 }
 
 declare module "next-auth" {
@@ -18,6 +19,7 @@ declare module "next-auth" {
       id: string;
       name: string;
       email: string;
+      profileImg: string; // Add profileImg here
     };
   }
 }
@@ -64,10 +66,13 @@ export const authOptions: AuthOptions = {
           }
 
           console.log("User authenticated successfully");
+
+          // Include profileImg in the returned user
           return {
             id: existingUser.id.toString(),
             name: existingUser.name,
             email: existingUser.email,
+            profileImg: existingUser.profileImg, // Include profileImg here
           };
         } catch (error) {
           console.error("Error during authentication", error);
@@ -80,6 +85,7 @@ export const authOptions: AuthOptions = {
     signIn: "/Signin",
   },
   secret: process.env.JWT_SECRET || "secret",
+
   callbacks: {
     async jwt({ token, account, profile, user }) {
       if (account) token.account = account;
@@ -93,6 +99,7 @@ export const authOptions: AuthOptions = {
           id: token.user.id,
           name: token.user.name as any,
           email: token.user.email as any,
+          profileImg: token.user.profileImg, // Include profileImg in session
         };
       }
       return session;

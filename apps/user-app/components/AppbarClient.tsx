@@ -8,7 +8,6 @@ export function AppbarClient() {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // Ensures that the component is marked as client-side rendered
     setIsClient(true);
   }, []);
 
@@ -25,9 +24,9 @@ export function AppbarClient() {
   };
 
   if (!isClient) {
-    return null; // Render nothing on the server-side to avoid mismatches
+    return null;
   }
-
+  // console.log(session?.user);
   return (
     <Appbar
       onSignin={handleSignIn}
