@@ -1,16 +1,9 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import { Sidebar } from "./Sidebar";
 
 export function SidebarClient() {
-  const { data: session } = useSession();
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    // Ensures that the component is marked as client-side rendered
-    setIsClient(true);
-  }, []);
+  const { data: session, status } = useSession();
 
   const handleSignIn = () => {
     signIn();
@@ -24,10 +17,7 @@ export function SidebarClient() {
     }
   };
 
-  if (!isClient) {
-    return null; // Render nothing on the server-side to avoid mismatches
-  }
-
+  if (status === "loading") return <div>Loading sidebar...</div>;
   return (
     <Sidebar
       onSignin={handleSignIn}

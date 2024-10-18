@@ -16,7 +16,7 @@ export async function sendEmail(to: string, username: string) {
     await transporter.sendMail({
       to,
       from: "er.shanthi20@gmail.com",
-      subject: "Welcome to ReadBite!",
+      subject: "Welcome to My-Wallet!",
       html: emailTemplate,
     });
   } catch (error) {

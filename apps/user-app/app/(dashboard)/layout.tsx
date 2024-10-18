@@ -17,7 +17,9 @@ export default function Layout({
       <AppbarClient />
       <div className="flex flex-1 overflow-hidden">
         <SidebarClient />
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense
+          fallback={<div className="p-4 text-center">Loading content...</div>}
+        >
           <main className="flex-grow overflow-auto">{children}</main>
         </Suspense>
       </div>

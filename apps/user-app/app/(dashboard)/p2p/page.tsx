@@ -1,10 +1,20 @@
-import React from "react";
-import { SendCard } from "../../../components/SendCard";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
 
-export default function page() {
+const SendCard = dynamic(
+  () => import("../../../components/SendCard").then((mod) => mod.SendCard),
+  {
+    ssr: false,
+    loading: () => <div>Loading SendCard...</div>,
+  }
+);
+
+export default function Page() {
   return (
     <div className="w-full">
-      <SendCard />
+      <Suspense fallback={<div>Loading content...</div>}>
+        <SendCard />
+      </Suspense>
     </div>
   );
 }
