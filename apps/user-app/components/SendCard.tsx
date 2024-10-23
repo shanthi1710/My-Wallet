@@ -43,7 +43,7 @@ export function SendCard() {
   };
 
   const handleClose = () => {
-    setMessage(""); // Close the pop-up
+    setMessage("");
     setNumber("");
     setAmount("");
   };

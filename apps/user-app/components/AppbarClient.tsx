@@ -26,7 +26,6 @@ export function AppbarClient() {
   if (!isClient) {
     return null;
   }
-  // console.log(session?.user);
   return (
     <Appbar
       onSignin={handleSignIn}
