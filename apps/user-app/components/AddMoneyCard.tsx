@@ -46,7 +46,6 @@ export const AddMoney = () => {
   const handleAddMoney = async () => {
     try {
       const result = await createOnRampTransaction(Number(amount), provider);
-      //console.log("result:->", result);
       window.location.href = redirectUrl || "";
       if (result.success) {
         alert("Transaction Succeeded");

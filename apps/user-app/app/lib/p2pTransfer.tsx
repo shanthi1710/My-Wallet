@@ -49,6 +49,7 @@ export async function p2pTransfer(to: string, amount: number) {
         throw new Error("Insufficient funds");
       }
 
+      // Update the sender's balance
       await tx.balance.update({
         where: { userId: Number(fromUser.id) },
         data: {
@@ -57,6 +58,7 @@ export async function p2pTransfer(to: string, amount: number) {
         },
       });
 
+      // Update or create the recipient's balance
       await tx.balance.upsert({
         where: { userId: Number(toUser.id) },
         update: {
@@ -70,6 +72,7 @@ export async function p2pTransfer(to: string, amount: number) {
         },
       });
 
+      // Log the successful p2p transfer
       await tx.p2pTransfer.create({
         data: {
           fromUserId: Number(fromUser.id),
@@ -79,6 +82,23 @@ export async function p2pTransfer(to: string, amount: number) {
           status: "Success",
         },
       });
+      // Notification for the sender (fromUser)
+      await tx.notification.create({
+        data: {
+          message: `You have successfully sent ₹${amount} to ${toUser.number}.`,
+          type: "SendMoney",
+          userId: fromUser.id,
+        },
+      });
+
+      // Notification for the recipient (toUser)
+      await tx.notification.create({
+        data: {
+          message: `You have received ₹${amount} from ${fromUser.number}.`,
+          type: "ReceiveMoney",
+          userId: toUser.id,
+        },
+      });
     });
 
     return {
@@ -86,6 +106,8 @@ export async function p2pTransfer(to: string, amount: number) {
     };
   } catch (error) {
     console.error(error);
+
+    // Log the failed transfer
     await prisma.p2pTransfer.create({
       data: {
         fromUserId: Number(fromUser.id),
@@ -93,6 +115,15 @@ export async function p2pTransfer(to: string, amount: number) {
         amount,
         timestamp: new Date(),
         status: "Failure",
+      },
+    });
+
+    // Optionally: Create a notification for failed transfers (sender only)
+    await prisma.notification.create({
+      data: {
+        message: `Your attempt to send $${amount} to ${toUser.number} failed due to insufficient funds.`,
+        type: "SendMoney",
+        userId: fromUser.id,
       },
     });
 

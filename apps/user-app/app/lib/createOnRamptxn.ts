@@ -43,9 +43,9 @@ export async function createOnRampTransaction(
       token: token,
     },
   });
+
   const shanthi = process.env.HDFC_SECRET;
-  //console.log("shanthi:------------->", shanthi);
-  console.log();
+
   try {
     const res = await axios.post<hdfcresponse>(
       "http://localhost:3003/hdfcWebhook",
@@ -63,6 +63,14 @@ export async function createOnRampTransaction(
     );
 
     if (res.data.message === "Captured") {
+      await db.notification.create({
+        data: {
+          message: `You have successfully added ₹${amount} to your wallet.`,
+          type: "AddFunds",
+          userId: Number(user.id),
+        },
+      });
+
       return {
         success: true,
         message: "Transaction Success",

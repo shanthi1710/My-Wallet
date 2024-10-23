@@ -25,6 +25,7 @@ model User {
   OnRampTransaction OnRampTransaction[]
   sentTransfers     p2pTransfer[]       @relation(name: "FromUserRelation")
   receivedTransfers p2pTransfer[]       @relation(name: "ToUserRelation")
+  Notification      Notification[]
 }
 
 model Merchant {
@@ -73,6 +74,22 @@ enum AuthType {
 enum TransferStatus {
   Success
   Failure
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  message   String
+  type      NotificationType
+  createdAt DateTime @default(now())
+  isRead    Boolean  @default(false)
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+enum NotificationType {
+  SendMoney
+  ReceiveMoney
+  AddFunds
 }
 
 enum OnRampStatus {

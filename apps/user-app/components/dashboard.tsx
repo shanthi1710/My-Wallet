@@ -108,7 +108,7 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle>Recent transaction</CardTitle>
               <CardDescription>
-                You made 10 transaction this month.
+                Here are your 10 most recent transactions.
               </CardDescription>
             </CardHeader>
             <CardContent className="h-full overflow-auto">
