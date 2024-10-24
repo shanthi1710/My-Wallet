@@ -99,7 +99,7 @@ export const authOptions: AuthOptions = {
           id: token.user.id,
           name: token.user.name as any,
           email: token.user.email as any,
-          profileImg: token.user.profileImg, // Include profileImg in session
+          profileImg: token.user.profileImg,
         };
       }
       return session;
