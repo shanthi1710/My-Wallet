@@ -211,14 +211,18 @@ export const Appbar: React.FC<AppbarProps> = ({ user }) => {
 
         {user && (
           <div className="flex items-center">
-            <Image
-              src={user.profileImg || ""}
-              alt="Profile"
-              width={40}
-              height={40}
-              className="rounded-full cursor-pointer"
+            <div
+              className="w-10 h-10 rounded-full overflow-hidden cursor-pointer"
               onClick={handleProfileClick}
-            />
+            >
+              <Image
+                src={user.profileImg || ""}
+                alt="Profile"
+                width={40}
+                height={40}
+                className="object-cover"
+              />
+            </div>
           </div>
         )}
         {isProfileDialogOpen && userDetails && (
