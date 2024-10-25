@@ -19,6 +19,7 @@
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
+    "@reduxjs/toolkit": "^2.3.0",
     "@repo/store": "*",
     "@repo/ui": "*",
     "@types/axios": "^0.9.36",
@@ -42,8 +43,10 @@
     "react": "^18.2.0",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.2.0",
+    "react-redux": "^9.1.2",
     "react-toastify": "^10.0.5",
     "recharts": "^2.12.7",
+    "redux-persist": "^6.0.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "twilio": "^5.3.3"

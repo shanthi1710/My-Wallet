@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { RiDashboardHorizontalLine } from "react-icons/ri";
 import { FaMoneyBillTransfer } from "react-icons/fa6";
+import { FaBook } from "react-icons/fa";
 import { AiOutlineTransaction } from "react-icons/ai";
 import { RiP2pFill } from "react-icons/ri";
 import React, { useState, useEffect } from "react";
@@ -28,16 +29,16 @@ export const Sidebar: React.FC<AppbarProps> = ({
 
   const menus = [
     { name: "Dashboard", link: "/dash", icon: RiDashboardHorizontalLine },
+    { name: "P2P", link: "/p2p", icon: RiP2pFill },
+    { name: "Qr-Scan", link: "/qr-scan", icon: MdQrCodeScanner },
     { name: "Add Money", link: "/transfer", icon: FaMoneyBillTransfer },
     { name: "withdraw money", link: "/withdraw", icon: BiMoneyWithdraw },
     {
-      name: "Transactions History",
+      name: "History",
       link: "/transactions",
       icon: AiOutlineTransaction,
     },
-
-    { name: "P2P", link: "/p2p", icon: RiP2pFill },
-    { name: "Qr-Scan", link: "/qr-scan", icon: MdQrCodeScanner },
+    { name: "PassBook", link: "/passbook", icon: FaBook },
   ];
 
   useEffect(() => {
