@@ -226,11 +226,11 @@ export const Appbar: React.FC<AppbarProps> = ({ user }) => {
           </div>
         )}
         {isProfileDialogOpen && userDetails && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white p-6 rounded-lg w-96 shadow-lg">
+          <div className="fixed inset-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50 z-50 !p-0 !m-0">
+            <div className="bg-white p-6 rounded-lg w-96 shadow-lg relative">
               <h2 className="text-xl font-semibold mb-4">Edit Profile</h2>
               <div className="flex flex-col space-y-4">
-                <div className=" flex flex-col items-center">
+                <div className="flex flex-col items-center">
                   <input
                     onChange={(e) => {
                       if (e.target.files && e.target.files[0]) {
