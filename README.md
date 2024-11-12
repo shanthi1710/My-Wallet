@@ -1,81 +1,55 @@
-# Turborepo starter
+# MyWallet
 
-This is an official starter Turborepo.
+## Overview
+MyWallet is a financial management web application that enables seamless peer-to-peer (P2P) money transfers, wallet top-ups, and withdrawals. With MyWallet, users can manage their finances efficiently, tracking monthly and total spending through visual graphs. The application also allows users to generate transaction history and download their passbook. Additional features include QR-based payments (QrPay) for quick transactions.
 
-## Using this example
+## Features
+- **P2P Money Transfers**: Send and receive money instantly with other users.
+- **Wallet Top-Up and Withdrawals**: Add or withdraw money from your wallet with ease.
+- **Transaction History**: Generate and view your full transaction history.
+- **Spending Insights**: Visual monthly and total spend graphs.
+- **Downloadable Passbook**: Export transaction details for easy tracking.
+- **QrPay**: Simplified QR-based payment system.
 
-Run the following command:
+## Tech Stack
+- **Next.js**: Provides a powerful React-based framework with built-in optimizations and API routes, enabling smooth client-server interactions.
+- **Prisma**: Simplifies database interactions with an easy-to-use ORM, ensuring efficient querying and data management.
+- **PostgreSQL**: A reliable, SQL-compliant database system, ideal for handling complex financial transactions.
+- **ShadCN UI**: Offers prebuilt, highly customizable components to enhance the UI design.
+- **Firebase**: Manages image storage, enabling secure and efficient media handling.
+- **Webhook Integration**: Facilitates real-time communication between MyWallet’s backend and the bank’s backend during wallet top-ups and withdrawals.
+- **Twilio SMS API**: Adds secure OTP (One-Time Password) verification for improved security.
+- **TurboRepo**: Manages multiple applications in a monorepo, facilitating streamlined development and deployment.
 
-```sh
-npx create-turbo@latest
-```
+### Why This Stack?
+This stack is chosen to provide a robust, efficient, and secure architecture for a financial management platform:
+- **Next.js and TurboRepo** allow for a modular, performant, and scalable architecture.
+- **Prisma and PostgreSQL** offer efficient data storage, retrieval, and management suited to transaction-heavy applications.
+- **ShadCN UI and Firebase** ensure a responsive and secure user experience, with Firebase handling image storage needs.
+- **Twilio SMS API** adds an essential layer of security with OTP verification.
+- **Webhook** supports real-time communication with the bank’s backend, ensuring instant updates on wallet balance during transactions.
 
-## What's inside?
+## Project Architecture
 
-This Turborepo includes the following packages/apps:
+The application follows a modular monorepo structure using **TurboRepo**, with different parts of the app handled in separate repositories or modules. Here’s an overview of the architecture:
 
-### Apps and Packages
+1. **Frontend (Next.js)**
+   - UI components powered by ShadCN, designed to offer a cohesive and accessible user experience.
+   - API Routes for server-side functions like wallet management and transaction history retrieval.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+2. **Backend (Node.js + Prisma + PostgreSQL)**
+   - Centralized database using PostgreSQL, accessed via Prisma ORM for easy querying and data management.
+   - Webhook integration for communication between MyWallet and the bank’s backend during wallet top-ups and withdrawals.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+3. **Authentication & Security (Firebase, Twilio)**
+   - Firebase handles secure image storage and user management.
+   - Twilio for OTP-based SMS verification.
 
-### Utilities
+4. **Real-Time Updates**
+   - Webhooks and Firebase are configured to offer instant updates on transaction status and user profile images.
 
-This Turborepo has some additional tools already setup for you:
+5. **File Management**
+   - Passbook generation and export functionality, allowing users to download and manage their transaction history.
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+![image](https://github.com/user-attachments/assets/5ccde5f1-df8b-4195-958c-c0fb476a9258)
 
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
